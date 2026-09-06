@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <title>Chinees Restaurant Diamant</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Chinees afhaalrestaurant Diamant in Udenhout &mdash; al meer dan 20 jaar klassiek Chinees. Bekijk de kaart en bestel telefonisch op 013 511 1824.">
+<meta name="description" content="Chinees afhaalrestaurant Diamant in Udenhout. Al meer dan 20 jaar klassiek Chinees. Bekijk de kaart en bestel telefonisch op 013 511 1824.">
 <meta name="theme-color" content="#D01E28">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23D01E28'/%3E%3Crect x='9.4' y='9.4' width='13.2' height='13.2' transform='rotate(45 16 16)' fill='white'/%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,7 +46,11 @@
   --gold:#D01E28;
   --gold-bright:#FFFFFF;
   --jade:#1B1B1B;
-  --shadow:24px 24px 0 rgba(208,30,40,.08);
+  --ok:#1A9D5A;
+  --r:12px;
+  --r-sm:8px;
+  --btn-shadow:0 8px 20px rgba(208,30,40,.24);
+  --card-shadow:0 1px 2px rgba(20,20,20,.04), 0 8px 24px rgba(20,20,20,.05);
 }
 :root:not([data-theme="light"]) {}
 @media (prefers-color-scheme: dark) {
@@ -61,7 +66,9 @@
     --gold:#F04A54;
     --gold-bright:#FFFFFF;
     --jade:#0F0F0F;
-    --shadow:24px 24px 0 rgba(0,0,0,.35);
+    --ok:#3EC07F;
+    --btn-shadow:0 8px 22px rgba(0,0,0,.4);
+    --card-shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 26px rgba(0,0,0,.32);
   }
 }
 :root[data-theme="dark"] {
@@ -76,7 +83,9 @@
   --gold:#F04A54;
   --gold-bright:#FFFFFF;
   --jade:#0F0F0F;
-  --shadow:24px 24px 0 rgba(0,0,0,.35);
+  --ok:#3EC07F;
+  --btn-shadow:0 8px 22px rgba(0,0,0,.4);
+  --card-shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 26px rgba(0,0,0,.32);
 }
 
 * { box-sizing:border-box; }
@@ -95,7 +104,12 @@ body {
 h1,h2,h3,h4 { font-family:"Zilla Slab", Georgia, "Times New Roman", serif; font-weight:700; line-height:1.1; text-wrap:balance; margin:0; }
 a { color:inherit; }
 img { max-width:100%; display:block; }
-.dia { color:var(--gold); font-style:normal; }
+
+/* shared marks / icons */
+.mark { width:1em; height:1em; fill:var(--gold); flex:none; }
+.ico { width:1.05em; height:1.05em; fill:currentColor; flex:none; }
+.ico-star { width:.95em; height:.95em; fill:var(--gold); flex:none; }
+.pip { width:.5em; height:.5em; background:var(--gold); transform:rotate(45deg); display:inline-block; flex:none; }
 
 /* ---------- header ---------- */
 .hdr {
@@ -108,7 +122,7 @@ img { max-width:100%; display:block; }
   border-bottom:1px solid var(--line);
 }
 .brand { display:flex; align-items:center; gap:10px; margin-right:auto; font-family:"Zilla Slab",serif; font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:1.05rem; text-decoration:none; }
-.brand .mark { color:var(--gold); font-size:1.1rem; }
+.brand .mark { font-size:1.15rem; }
 .hdr-nav { display:flex; gap:22px; align-items:center; }
 .hdr-nav a { font-size:.82rem; letter-spacing:.13em; text-transform:uppercase; text-decoration:none; color:var(--ink-soft); font-weight:600; transition:color .15s; }
 .hdr-nav a:hover { color:var(--lacquer); }
@@ -118,32 +132,37 @@ img { max-width:100%; display:block; }
   padding:10px 16px; border-radius:999px;
   font-weight:700; font-size:.85rem; letter-spacing:.02em; text-decoration:none;
   white-space:nowrap; min-height:40px;
-  box-shadow:0 2px 0 var(--lacquer-deep);
+  box-shadow:0 4px 12px rgba(208,30,40,.22);
+  transition:background .15s, box-shadow .15s;
 }
-.hdr .call:hover { background:var(--lacquer-deep); }
+.hdr .call:hover { background:var(--lacquer-deep); box-shadow:0 6px 16px rgba(208,30,40,.3); }
 
 /* mobile disclosure menu */
 .hdr-menu { display:none; position:relative; }
 .hdr-menu > summary {
   list-style:none; cursor:pointer;
   width:42px; height:42px; display:grid; place-items:center;
-  border:1px solid var(--line); border-radius:10px;
-  font-size:1.15rem; color:var(--ink); background:var(--card);
+  border:1px solid var(--line); border-radius:var(--r-sm);
+  color:var(--ink); background:var(--card);
 }
 .hdr-menu > summary::-webkit-details-marker { display:none; }
+.hdr-menu > summary::before {
+  content:""; width:18px; height:2px; background:currentColor; border-radius:2px;
+  box-shadow:0 -6px 0 currentColor, 0 6px 0 currentColor;
+}
 .hdr-menu > summary:focus-visible { outline:2px solid var(--lacquer); outline-offset:2px; }
 .hdr-menu[open] > summary { background:var(--paper-2); }
 .hdr-menu .panel {
   position:absolute; right:0; top:calc(100% + 12px);
   min-width:200px;
   background:var(--card);
-  border:1px solid var(--line); border-radius:12px;
-  box-shadow:0 16px 40px rgba(0,0,0,.16);
+  border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--card-shadow);
   display:flex; flex-direction:column;
   padding:6px;
 }
 .hdr-menu .panel a {
-  padding:12px 14px; border-radius:8px;
+  padding:12px 14px; border-radius:var(--r-sm);
   font-size:.9rem; letter-spacing:.08em; text-transform:uppercase;
   text-decoration:none; color:var(--ink); font-weight:600;
 }
@@ -173,27 +192,30 @@ img { max-width:100%; display:block; }
   color:#F4F4F4;
 }
 .hero .kicker { font-size:.8rem; letter-spacing:.32em; text-transform:uppercase; color:#FFFFFF; font-weight:700; margin-bottom:16px; }
-.hero h1 { font-size:clamp(2.3rem,8vw,5.4rem); color:#fff; letter-spacing:.02em; overflow-wrap:break-word; }
-.hero p.lead { font-size:clamp(1rem,2.4vw,1.28rem); max-width:44ch; margin:18px 0 30px; color:#ECECEC; }
+.hero h1 { font-size:clamp(2.3rem,6.4vw,4.4rem); line-height:1.04; color:#fff; letter-spacing:.01em; max-width:14ch; overflow-wrap:break-word; }
+.hero p.lead { font-size:clamp(1rem,2.4vw,1.28rem); max-width:46ch; margin:20px 0 30px; color:#ECECEC; }
 .hero-actions { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
 .btn-primary {
-  display:inline-flex; align-items:center; gap:10px;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
   background:var(--lacquer); color:#fff; text-decoration:none;
   font-weight:700; font-size:1.05rem;
   padding:15px 26px; border-radius:999px;
-  box-shadow:0 3px 0 var(--lacquer-deep);
-  transition:transform .12s;
+  box-shadow:var(--btn-shadow);
+  transition:transform .12s, box-shadow .15s, background .15s;
 }
-.btn-primary:hover { transform:translateY(-2px); }
+.btn-primary:hover { transform:translateY(-2px); background:var(--lacquer-deep); }
+.btn-primary:focus-visible { outline:2px solid #fff; outline-offset:3px; }
 .btn-ghost {
   display:inline-flex; align-items:center; gap:8px;
   border:1.5px solid rgba(255,255,255,.55); color:#fff; text-decoration:none;
   font-weight:600; font-size:.95rem; padding:13px 22px; border-radius:999px;
+  transition:border-color .15s, background .15s;
 }
 .btn-ghost:hover { border-color:#fff; background:rgba(255,255,255,.12); }
-.hero-meta { margin-top:26px; display:flex; flex-wrap:wrap; gap:10px 22px; font-size:.9rem; color:rgba(255,255,255,.82); }
-.hero-meta span { display:inline-flex; align-items:center; gap:7px; }
-.hero-meta .dot { color:#fff; }
+.hero-meta { margin-top:28px; display:flex; flex-wrap:wrap; gap:10px 22px; font-size:.9rem; color:rgba(255,255,255,.85); }
+.hero-meta span { display:inline-flex; align-items:center; gap:8px; }
+.hero-meta .pip { background:#fff; }
+.hero-meta .ico-star { fill:#fff; }
 
 /* ---------- generic section ---------- */
 .wrap { max-width:1100px; margin:0 auto; padding:clamp(56px,9vw,104px) clamp(20px,5vw,48px); }
@@ -205,7 +227,8 @@ img { max-width:100%; display:block; }
 .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
 @media (max-width:760px) { .steps { grid-template-columns:1fr; } }
 .step {
-  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--card-shadow);
   padding:28px 24px;
   position:relative;
 }
@@ -222,24 +245,51 @@ img { max-width:100%; display:block; }
 
 /* ---------- menu ---------- */
 #kaart { background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+#kaart .wrap { padding-top:clamp(30px,5vw,52px); }
+.cat-nav {
+  position:sticky; top:59px; z-index:40;
+  background:color-mix(in srgb, var(--paper-2) 92%, transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.cat-nav-track {
+  max-width:1100px; margin:0 auto;
+  display:flex; gap:8px; overflow-x:auto;
+  padding:10px clamp(16px,5vw,48px);
+  scrollbar-width:none;
+}
+.cat-nav-track::-webkit-scrollbar { display:none; }
+.cat-nav a {
+  flex:none;
+  padding:7px 14px; border-radius:999px;
+  border:1px solid var(--line); background:var(--card);
+  font-size:.8rem; font-weight:600; letter-spacing:.02em;
+  text-decoration:none; color:var(--ink-soft); white-space:nowrap;
+  transition:border-color .15s, color .15s;
+}
+.cat-nav a:hover, .cat-nav a:focus-visible { color:var(--lacquer); border-color:var(--lacquer); outline:none; }
+.cat-nav a[data-active] { color:#fff; background:var(--lacquer); border-color:var(--lacquer); }
 .menu-head { text-align:center; margin-bottom:14px; }
 .menu-head .sec-eyebrow { margin-bottom:10px; }
-.menu-rule { width:64px; height:3px; background:var(--gold); margin:20px auto 0; }
-.menu-grid { columns:2; column-gap:56px; margin-top:48px; }
+.menu-rule { width:64px; height:3px; background:var(--gold); margin:20px auto 0; border-radius:2px; }
+.menu-grid { columns:2; column-gap:56px; margin-top:44px; }
 @media (max-width:800px) { .menu-grid { columns:1; } }
-.cat { break-inside:avoid; margin:0 0 38px; }
+.cat { break-inside:avoid; margin:0 0 38px; scroll-margin-top:120px; }
 .cat-title {
   font-size:1.15rem; letter-spacing:.02em;
   padding-bottom:8px; margin-bottom:14px;
   border-bottom:2px solid var(--gold);
-  display:flex; align-items:baseline; gap:10px;
+  display:flex; align-items:center; gap:10px;
 }
-.cat-title .dia { font-size:.8rem; }
+.cat-title::before {
+  content:""; width:.5em; height:.5em; flex:none;
+  background:var(--gold); transform:rotate(45deg);
+}
 .cat-note { margin:-6px 0 14px; font-size:.82rem; color:var(--ink-soft); font-style:italic; }
 .dish-list { list-style:none; margin:0; padding:0; }
 .dish {
   display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px;
-  padding:7px 0;
+  padding:8px 0;
   font-size:.95rem;
 }
 .dish + .dish { border-top:1px dotted var(--line); }
@@ -249,25 +299,30 @@ img { max-width:100%; display:block; }
   min-width:2.4ch; text-align:right;
   font-variant-numeric:tabular-nums;
 }
-.dish-name { flex:1 1 auto; }
+.dish-name { flex:0 1 auto; }
 .dish-dots { flex:1 1 24px; border-bottom:1px dotted var(--line); transform:translateY(-3px); min-width:16px; }
 .dish-price {
   font-variant-numeric:tabular-nums; font-weight:600;
   color:var(--ink); white-space:nowrap; margin-left:auto;
 }
 .dish-price::before { content:"\20AC\00A0"; color:var(--ink-soft); font-weight:400; }
+.dish-desc {
+  flex:1 1 100%;
+  font-size:.82rem; color:var(--ink-soft); line-height:1.45;
+  margin-top:2px; padding-left:calc(2.4ch + 8px);
+}
 
 /* ---------- menus / rijsttafels ---------- */
 .deal-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin-top:44px; }
 .deal {
   background:var(--card); border:1px solid var(--line); border-top:3px solid var(--lacquer);
-  border-radius:4px; padding:26px 24px;
+  border-radius:var(--r); box-shadow:var(--card-shadow); padding:26px 24px;
 }
 .deal h3 { font-size:1.22rem; margin-bottom:4px; }
 .deal .serves { font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--lacquer); font-weight:700; }
 .deal ul { list-style:none; margin:14px 0 18px; padding:0; }
 .deal li { padding:3px 0; font-size:.92rem; color:var(--ink-soft); padding-left:16px; position:relative; }
-.deal li::before { content:"\25C6"; color:var(--gold); font-size:.6rem; position:absolute; left:0; top:.5em; }
+.deal li::before { content:""; width:5px; height:5px; background:var(--gold); transform:rotate(45deg); position:absolute; left:0; top:.62em; }
 .deal .prices { display:flex; gap:18px; border-top:1px solid var(--line); padding-top:14px; font-variant-numeric:tabular-nums; }
 .deal .prices b { font-family:"Zilla Slab",serif; font-size:1.15rem; color:var(--ink); }
 .deal .prices span { font-size:.78rem; color:var(--ink-soft); display:block; letter-spacing:.1em; text-transform:uppercase; }
@@ -275,7 +330,7 @@ img { max-width:100%; display:block; }
 /* ---------- gallery ---------- */
 .gallery { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
 @media (max-width:760px) { .gallery { grid-template-columns:repeat(2,1fr); } }
-.gallery figure { margin:0; position:relative; aspect-ratio:1/1; overflow:hidden; border-radius:4px; background:var(--paper-2); }
+.gallery figure { margin:0; position:relative; aspect-ratio:1/1; overflow:hidden; border-radius:var(--r); background:var(--paper-2); }
 .gallery img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
 .gallery figure:hover img { transform:scale(1.05); }
 .gallery figcaption {
@@ -288,10 +343,18 @@ img { max-width:100%; display:block; }
 /* ---------- info ---------- */
 .info-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:48px; }
 @media (max-width:800px) { .info-grid { grid-template-columns:1fr; gap:36px; } }
-.info-block h3 { font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:9px; }
-.info-block h3 .dia { font-size:.72rem; }
+.info-block h3 { font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+.open-status {
+  display:flex; align-items:center; gap:9px;
+  margin:0 0 16px; font-weight:600; font-size:.95rem;
+  color:var(--ink-soft);
+}
+.open-status .os-dot { width:9px; height:9px; border-radius:50%; background:var(--ink-soft); flex:none; }
+.open-status.is-open { color:var(--ok); }
+.open-status.is-open .os-dot { background:var(--ok); box-shadow:0 0 0 4px color-mix(in srgb, var(--ok) 22%, transparent); }
+.open-status.is-closed .os-dot { background:var(--lacquer); }
 .hours { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
-.hours td { padding:8px 0; border-bottom:1px dotted var(--line); font-size:.95rem; }
+.hours td { padding:9px 0; border-bottom:1px dotted var(--line); font-size:.95rem; }
 .hours td:last-child { text-align:right; color:var(--ink-soft); }
 .hours tr.today td { color:var(--lacquer); font-weight:700; }
 .hours td.closed { font-style:italic; }
@@ -299,8 +362,8 @@ img { max-width:100%; display:block; }
 .addr a.maplink { color:var(--lacquer); font-weight:600; text-decoration:none; border-bottom:1px solid currentColor; }
 .notice {
   margin-top:20px; padding:14px 16px; font-size:.88rem;
-  background:color-mix(in srgb, var(--gold) 14%, var(--card));
-  border-left:3px solid var(--gold); border-radius:2px; color:var(--ink-soft);
+  background:color-mix(in srgb, var(--gold) 12%, var(--card));
+  border-left:3px solid var(--gold); border-radius:var(--r-sm); color:var(--ink-soft);
 }
 .bigcall {
   margin-top:22px;
@@ -308,13 +371,14 @@ img { max-width:100%; display:block; }
   font-family:"Zilla Slab",serif; font-weight:700; font-size:1.5rem;
   color:var(--lacquer); text-decoration:none;
 }
-.bigcall .ring { width:14px; height:14px; border-radius:50%; background:var(--lacquer); box-shadow:0 0 0 4px color-mix(in srgb,var(--lacquer) 25%, transparent); }
+.bigcall .ring { width:14px; height:14px; border-radius:50%; background:var(--lacquer); box-shadow:0 0 0 4px color-mix(in srgb,var(--lacquer) 25%, transparent); flex:none; }
+.bigcall:hover { text-decoration:underline; }
 
 /* ---------- footer ---------- */
 .foot { background:var(--jade); color:#E8E8E8; }
 .foot .wrap { padding-top:56px; padding-bottom:56px; display:flex; flex-wrap:wrap; gap:30px 60px; justify-content:space-between; align-items:flex-start; }
 .foot .brand { color:#fff; margin-bottom:12px; }
-.foot .brand .mark { color:#FF6B73; }
+.foot .brand .mark { fill:#FF6B73; }
 .foot p { margin:4px 0; font-size:.9rem; color:#BDBDBD; }
 .foot a { color:#FF6B73; text-decoration:none; }
 .foot .col h4 { font-family:"Zilla Slab",serif; font-size:.8rem; letter-spacing:.2em; text-transform:uppercase; color:#FF6B73; margin-bottom:10px; }
@@ -324,16 +388,16 @@ img { max-width:100%; display:block; }
 <body>
 
 <header class="hdr">
-  <a href="#top" class="brand"><span class="mark">&#9670;</span>Diamant</a>
+  <a href="#top" class="brand"><svg class="mark" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.6" y="2.6" width="6.8" height="6.8" transform="rotate(45 6 6)"/></svg>Diamant</a>
   <nav class="hdr-nav">
     <a href="#bestellen">Bestellen</a>
     <a href="#kaart">Kaart</a>
     <a href="#menus">Menu&rsquo;s</a>
     <a href="#info">Bezoek</a>
   </nav>
-  <a class="call" href="tel:+31135111824">&#9742;&nbsp; 013 511 1824</a>
+  <a class="call" href="tel:+31135111824"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.1-2.1c.3-.3.7-.4 1-.3 1.1.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.3 0 .7-.3 1z"/></svg> 013 511 1824</a>
   <details class="hdr-menu">
-    <summary aria-label="Menu openen">&#9776;</summary>
+    <summary aria-label="Menu openen"></summary>
     <nav class="panel">
       <a href="#bestellen">Bestellen</a>
       <a href="#kaart">Kaart</a>
@@ -349,15 +413,15 @@ img { max-width:100%; display:block; }
     <div class="hero-inner">
       <div class="kicker">Udenhout &middot; sinds 2003</div>
       <h1>Chinees Restaurant Diamant</h1>
-      <p class="lead">Klassiek Chinees om af te halen &mdash; het vertrouwde recept, al meer dan twintig jaar op de hoek van de Slimstraat.</p>
+      <p class="lead">Klassiek Chinees om af te halen. Het vertrouwde recept, al meer dan twintig jaar op de hoek van de Slimstraat.</p>
       <div class="hero-actions">
-        <a class="btn-primary" href="tel:+31135111824">&#9742;&nbsp; Bestel &mdash; 013 511 1824</a>
+        <a class="btn-primary" href="tel:+31135111824"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.1-2.1c.3-.3.7-.4 1-.3 1.1.4 2.4.6 3.7.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.3 0 .7-.3 1z"/></svg> Bel 013 511 1824</a>
         <a class="btn-ghost" href="#kaart">Bekijk de kaart</a>
       </div>
       <div class="hero-meta">
-        <span><span class="dot">&#9670;</span> Slimstraat 29, Udenhout</span>
-        <span><span class="dot">&#9670;</span> Doorgaans klaar in ~20 min</span>
-        <span><span class="dot">&#9670;</span> 4,1 &#9733; op Google</span>
+        <span><span class="pip"></span> Slimstraat 29, Udenhout</span>
+        <span><span class="pip"></span> Doorgaans klaar in 20 minuten</span>
+        <span><svg class="ico-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.8 6 6.6.8-4.9 4.5 1.3 6.5L12 18.1 6.2 20.8l1.3-6.5L2.6 9.3l6.6-.8z"/></svg> 4,1 op Google</span>
       </div>
     </div>
   </section>
@@ -370,12 +434,12 @@ img { max-width:100%; display:block; }
       <div class="step">
         <div class="n">1</div>
         <h3>Bel je bestelling door</h3>
-        <p>Kies van de kaart en bel <a href="tel:+31135111824" style="color:var(--lacquer);font-weight:600;text-decoration:none">013 511 1824</a>. Doorgeven op nummer mag &mdash; &ldquo;twee keer 27 graag&rdquo;.</p>
+        <p>Kies van de kaart en bel <a href="tel:+31135111824" style="color:var(--lacquer);font-weight:600;text-decoration:none">013 511 1824</a>. Doorgeven op nummer mag: &ldquo;twee keer 27 graag&rdquo;.</p>
       </div>
       <div class="step">
         <div class="n">2</div>
         <h3>Wij maken het vers</h3>
-        <p>De keuken gaat aan de slag. De meeste bestellingen staan binnen zo&rsquo;n twintig minuten klaar; met feestdagen iets langer.</p>
+        <p>De keuken gaat aan de slag. De meeste bestellingen staan binnen zo&rsquo;n twintig minuten klaar; op feestdagen iets langer.</p>
       </div>
       <div class="step">
         <div class="n">3</div>
@@ -386,6 +450,7 @@ img { max-width:100%; display:block; }
   </section>
 
   <section id="kaart">
+    <nav class="cat-nav" aria-label="Categorie&euml;n"><div class="cat-nav-track"><a href="#cat-soepen">Soepen</a><a href="#cat-voorgerechten-en-snacks">Voorgerechten</a><a href="#cat-nasi">Nasi</a><a href="#cat-bami">Bami</a><a href="#cat-mihoen-en-chinese-bami">Mihoen</a><a href="#cat-tjap-tjoy-en-foe-yong-hai">Tjap tjoy</a><a href="#cat-varkensvlees">Varkensvlees</a><a href="#cat-kip">Kip</a><a href="#cat-rundvlees-en-ossenhaas">Rundvlees</a><a href="#cat-garnalen">Garnalen</a><a href="#cat-specialiteiten">Specialiteiten</a><a href="#cat-thaise-gerechten">Thaise gerechten</a></div></nav>
     <div class="wrap">
       <div class="menu-head">
         <div class="sec-eyebrow">De kaart</div>
@@ -394,8 +459,8 @@ img { max-width:100%; display:block; }
         <div class="menu-rule"></div>
       </div>
       <div class="menu-grid">
-        <section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Soepen</h3>
+        <section class="cat" id="cat-soepen">
+<h3 class="cat-title">Soepen</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">1</span><span class="dish-name">Kippensoep</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">3,50</span></li>
@@ -405,16 +470,16 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">8</span><span class="dish-name">Wan tan soep</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">5,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Voorgerechten &amp; snacks</h3>
+<section class="cat" id="cat-voorgerechten-en-snacks">
+<h3 class="cat-title">Voorgerechten &amp; snacks</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">10</span><span class="dish-name">Kroepoek</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">3,50</span></li>
 <li class="dish"><span class="dish-num">11</span><span class="dish-name">Loempia</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">6,00</span></li>
-<li class="dish"><span class="dish-num">12</span><span class="dish-name">Loempia Diamant &mdash; loempia met 2 stokjes sat&eacute; &amp; babi pangang</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,00</span></li>
+<li class="dish dish--desc"><span class="dish-num">12</span><span class="dish-name">Loempia Diamant</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,00</span><span class="dish-desc">loempia met 2 stokjes sat&eacute; &amp; babi pangang</span></li>
 <li class="dish"><span class="dish-num">13</span><span class="dish-name">Frites</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">3,50</span></li>
 <li class="dish"><span class="dish-num">14</span><span class="dish-name">Mini loempia&rsquo;s (8 stuks)</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">5,00</span></li>
-<li class="dish"><span class="dish-num">16</span><span class="dish-name">Sat&eacute; ajam &mdash; kip, 4 stuks</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">6,50</span></li>
+<li class="dish dish--desc"><span class="dish-num">16</span><span class="dish-name">Sat&eacute; ajam</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">6,50</span><span class="dish-desc">kip, 4 stuks</span></li>
 <li class="dish"><span class="dish-num">17</span><span class="dish-name">Sat&eacute;saus</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">3,00</span></li>
 <li class="dish"><span class="dish-num">18</span><span class="dish-name">Pikante saus</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">3,00</span></li>
 <li class="dish"><span class="dish-num">19</span><span class="dish-name">Atjar</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">2,50</span></li>
@@ -427,14 +492,14 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">26</span><span class="dish-name">Gepaneerde garnaal</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">8,00</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Nasi</h3>
+<section class="cat" id="cat-nasi">
+<h3 class="cat-title">Nasi</h3>
 <p class="cat-note">Grote nasi, tenzij anders vermeld</p>
 <ul class="dish-list">
-<li class="dish"><span class="dish-num">27</span><span class="dish-name">Nasi compleet &mdash; babi pangang, tjap tjoy, koe loe kai &amp; foe yong hai</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span></li>
-<li class="dish"><span class="dish-num">28</span><span class="dish-name">Nasi Diamant &mdash; babi pangang, foe yong hai, 2 stuks sat&eacute; &amp; kippenpootje</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span></li>
+<li class="dish dish--desc"><span class="dish-num">27</span><span class="dish-name">Nasi compleet</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span><span class="dish-desc">babi pangang, tjap tjoy, koe loe kai &amp; foe yong hai</span></li>
+<li class="dish dish--desc"><span class="dish-num">28</span><span class="dish-name">Nasi Diamant</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span><span class="dish-desc">babi pangang, foe yong hai, 2 stuks sat&eacute; &amp; kippenpootje</span></li>
 <li class="dish"><span class="dish-num">29</span><span class="dish-name">Nasi met ei, ham &amp; vlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">6,50</span></li>
-<li class="dish"><span class="dish-num">30</span><span class="dish-name">Nasi speciaal &mdash; kippenpootje &amp; 1 stokje sat&eacute;</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">13,00</span></li>
+<li class="dish dish--desc"><span class="dish-num">30</span><span class="dish-name">Nasi speciaal</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">13,00</span><span class="dish-desc">kippenpootje &amp; 1 stokje sat&eacute;</span></li>
 <li class="dish"><span class="dish-num">31</span><span class="dish-name">Nasi kip &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,50</span></li>
 <li class="dish"><span class="dish-num">32</span><span class="dish-name">Nasi varkensvlees &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,50</span></li>
 <li class="dish"><span class="dish-num">33</span><span class="dish-name">Nasi rundvlees &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">15,50</span></li>
@@ -446,14 +511,14 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">43</span><span class="dish-name">Tjap fang</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">14,00</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Bami</h3>
+<section class="cat" id="cat-bami">
+<h3 class="cat-title">Bami</h3>
 <p class="cat-note">Grote bami, tenzij anders vermeld</p>
 <ul class="dish-list">
-<li class="dish"><span class="dish-num">44</span><span class="dish-name">Bami compleet &mdash; babi pangang, tjap tjoy, koe loe kai &amp; foe yong hai</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span></li>
-<li class="dish"><span class="dish-num">45</span><span class="dish-name">Bami Diamant &mdash; babi pangang, foe yong hai, 2 stuks sat&eacute; &amp; kippenpootje</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span></li>
+<li class="dish dish--desc"><span class="dish-num">44</span><span class="dish-name">Bami compleet</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span><span class="dish-desc">babi pangang, tjap tjoy, koe loe kai &amp; foe yong hai</span></li>
+<li class="dish dish--desc"><span class="dish-num">45</span><span class="dish-name">Bami Diamant</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">21,00</span><span class="dish-desc">babi pangang, foe yong hai, 2 stuks sat&eacute; &amp; kippenpootje</span></li>
 <li class="dish"><span class="dish-num">46</span><span class="dish-name">Bami met ei, ham &amp; vlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">6,50</span></li>
-<li class="dish"><span class="dish-num">47</span><span class="dish-name">Bami speciaal &mdash; kippenpootje &amp; 1 stokje sat&eacute;</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">13,00</span></li>
+<li class="dish dish--desc"><span class="dish-num">47</span><span class="dish-name">Bami speciaal</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">13,00</span><span class="dish-desc">kippenpootje &amp; 1 stokje sat&eacute;</span></li>
 <li class="dish"><span class="dish-num">48</span><span class="dish-name">Bami kip &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,50</span></li>
 <li class="dish"><span class="dish-num">49</span><span class="dish-name">Bami varkensvlees &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">12,50</span></li>
 <li class="dish"><span class="dish-num">50</span><span class="dish-name">Bami rundvlees &amp; groenten</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">15,50</span></li>
@@ -464,15 +529,15 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">59</span><span class="dish-name">Foe you mien</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Mihoen &amp; Chinese bami</h3>
+<section class="cat" id="cat-mihoen-en-chinese-bami">
+<h3 class="cat-title">Mihoen &amp; Chinese bami</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">61</span><span class="dish-name">Mihoen varkensvlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">14,00</span></li>
 <li class="dish"><span class="dish-num">62</span><span class="dish-name">Mihoen kip</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">14,00</span></li>
 <li class="dish"><span class="dish-num">64</span><span class="dish-name">Mihoen rundvlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">16,50</span></li>
 <li class="dish"><span class="dish-num">65</span><span class="dish-name">Mihoen garnalen</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,50</span></li>
-<li class="dish"><span class="dish-num">66</span><span class="dish-name">Mihoen Diamant &mdash; babi pangang, foe yong hai, kippenpootje &amp; 2 stokjes sat&eacute;</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">22,50</span></li>
+<li class="dish dish--desc"><span class="dish-num">66</span><span class="dish-name">Mihoen Diamant</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">22,50</span><span class="dish-desc">babi pangang, foe yong hai, kippenpootje &amp; 2 stokjes sat&eacute;</span></li>
 <li class="dish"><span class="dish-num">67</span><span class="dish-name">Mihoen Singapore</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">15,50</span></li>
 <li class="dish"><span class="dish-num">68</span><span class="dish-name">Chinese bami varkensvlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">14,00</span></li>
 <li class="dish"><span class="dish-num">69</span><span class="dish-name">Chinese bami kip</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">14,00</span></li>
@@ -480,8 +545,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">71</span><span class="dish-name">Chinese bami garnalen</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Tjap tjoy &amp; foe yong hai</h3>
+<section class="cat" id="cat-tjap-tjoy-en-foe-yong-hai">
+<h3 class="cat-title">Tjap tjoy &amp; foe yong hai</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">72</span><span class="dish-name">Tjap tjoy varkensvlees</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">15,00</span></li>
@@ -493,8 +558,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">79</span><span class="dish-name">Foe yong hai garnalen</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">18,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Varkensvlees</h3>
+<section class="cat" id="cat-varkensvlees">
+<h3 class="cat-title">Varkensvlees</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">81</span><span class="dish-name">Babi pangang</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,00</span></li>
@@ -509,8 +574,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">98</span><span class="dish-name">Tja siu</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Kip</h3>
+<section class="cat" id="cat-kip">
+<h3 class="cat-title">Kip</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">100</span><span class="dish-name">Ajam pangang</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">15,00</span></li>
@@ -526,8 +591,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">115</span><span class="dish-name">Kon po kai</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">17,00</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Rundvlees &amp; ossenhaas</h3>
+<section class="cat" id="cat-rundvlees-en-ossenhaas">
+<h3 class="cat-title">Rundvlees &amp; ossenhaas</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">117</span><span class="dish-name">Ossenhaas met champignons</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">18,50</span></li>
@@ -538,8 +603,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">122</span><span class="dish-name">Szechuan bief</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">19,00</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Garnalen</h3>
+<section class="cat" id="cat-garnalen">
+<h3 class="cat-title">Garnalen</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">123</span><span class="dish-name">Garnalen met champignons</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">18,50</span></li>
@@ -549,8 +614,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">128</span><span class="dish-name">Kon po ha</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">19,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Specialiteiten</h3>
+<section class="cat" id="cat-specialiteiten">
+<h3 class="cat-title">Specialiteiten</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">132</span><span class="dish-name">Peking eend</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">18,50</span></li>
@@ -560,8 +625,8 @@ img { max-width:100%; display:block; }
 <li class="dish"><span class="dish-num">141</span><span class="dish-name">Tongfilet met ananas</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">19,50</span></li>
 </ul>
 </section>
-<section class="cat">
-<h3 class="cat-title"><span class="dia">&#9670;</span>Thaise gerechten</h3>
+<section class="cat" id="cat-thaise-gerechten">
+<h3 class="cat-title">Thaise gerechten</h3>
 
 <ul class="dish-list">
 <li class="dish"><span class="dish-num">143</span><span class="dish-name">Kai pad ped</span><span class="dish-dots" aria-hidden="true"></span><span class="dish-price">16,50</span></li>
@@ -658,18 +723,19 @@ img { max-width:100%; display:block; }
     <h2 class="sec-title">Afhalen &amp; contact</h2>
     <div class="info-grid" style="margin-top:36px">
       <div class="info-block addr">
-        <h3><span class="dia">&#9670;</span> Adres &amp; bestellen</h3>
+        <h3><span class="pip"></span> Adres &amp; bestellen</h3>
         <p><strong>Chinees Restaurant Diamant</strong></p>
         <p>Slimstraat 29</p>
         <p>5071 EG Udenhout</p>
-        <p style="margin-top:10px"><a class="maplink" href="https://maps.google.com/?q=Chinees+Restaurant+Diamant,+Slimstraat+29,+Udenhout" target="_blank" rel="noopener">Route via Google Maps &rarr;</a></p>
-        <a class="bigcall" href="tel:+31135111824"><span class="ring"></span> 013 &ndash; 511 1824</a>
+        <p style="margin-top:10px"><a class="maplink" href="https://maps.google.com/?q=Chinees+Restaurant+Diamant,+Slimstraat+29,+Udenhout" target="_blank" rel="noopener">Bekijk op Google Maps</a></p>
+        <a class="bigcall" href="tel:+31135111824"><span class="ring"></span> 013 511 1824</a>
         <div class="notice">
           Wij zoeken nog een telefonist(e) voor de zon- en feestdagen. Interesse? Bel gerust hetzelfde nummer.
         </div>
       </div>
       <div class="info-block">
-        <h3><span class="dia">&#9670;</span> Openingstijden</h3>
+        <h3><span class="pip"></span> Openingstijden</h3>
+        <p class="open-status" id="openStatus" hidden><span class="os-dot"></span><span class="os-text"></span></p>
         <table class="hours">
           <tr><td>Maandag</td><td>16:00&ndash;20:30</td></tr>
           <tr><td>Dinsdag</td><td class="closed">Gesloten</td></tr>
@@ -688,7 +754,7 @@ img { max-width:100%; display:block; }
 <footer class="foot">
   <div class="wrap">
     <div class="col">
-      <div class="brand"><span class="mark">&#9670;</span> Diamant</div>
+      <div class="brand"><svg class="mark" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.6" y="2.6" width="6.8" height="6.8" transform="rotate(45 6 6)"/></svg> Diamant</div>
       <p>Chinees afhaalrestaurant</p>
       <p>Slimstraat 29, 5071 EG Udenhout</p>
       <p><a href="tel:+31135111824">013 511 1824</a></p>
@@ -711,21 +777,58 @@ img { max-width:100%; display:block; }
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
-  // highlight today's row in the opening-hours table
+
+  var now = new Date(), dow = now.getDay(), mins = now.getHours() * 60 + now.getMinutes();
+
+  // highlight today's row in the opening-hours table (rows: ma,di,wo,do,vr,za,zo)
   var rows = document.querySelectorAll('.hours tr');
-  var d = new Date().getDay(); // 0 = zondag
-  var map = [6,0,1,2,3,4,5];   // table row index for weekday
-  if (rows[map[d]]) rows[map[d]].classList.add('today');
+  var map = [6,0,1,2,3,4,5];
+  if (rows[map[dow]]) rows[map[dow]].classList.add('today');
+
+  // live "nu open / gesloten" status
+  var SCHED = {0:[720,1230], 1:[960,1230], 3:[960,1230], 4:[960,1230], 5:[960,1230], 6:[720,1230]};
+  var DAYS = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+  function fmt(x) { var h = Math.floor(x / 60), m = x % 60; return h + ':' + (m < 10 ? '0' : '') + m; }
+  var el = document.getElementById('openStatus');
+  if (el) {
+    var t = SCHED[dow], msg, state;
+    if (t && mins >= t[0] && mins < t[1]) { state = 'is-open'; msg = 'Nu open, tot ' + fmt(t[1]); }
+    else if (t && mins < t[0]) { state = 'is-closed'; msg = 'Nu gesloten, vandaag vanaf ' + fmt(t[0]); }
+    else {
+      state = 'is-closed'; msg = 'Nu gesloten';
+      for (var i = 1; i <= 7; i++) { var nd = (dow + i) % 7; if (SCHED[nd]) { msg = 'Nu gesloten, ' + (i === 1 ? 'morgen' : DAYS[nd]) + ' vanaf ' + fmt(SCHED[nd][0]); break; } }
+    }
+    el.classList.add(state);
+    el.querySelector('.os-text').textContent = msg;
+    el.hidden = false;
+  }
 
   // close the mobile disclosure menu after choosing a section
-  var m = document.querySelector('.hdr-menu');
-  if (m) {
-    m.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click', function(){ m.removeAttribute('open'); });
+  var mnu = document.querySelector('.hdr-menu');
+  if (mnu) {
+    mnu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ mnu.removeAttribute('open'); });
     });
     document.addEventListener('click', function(e){
-      if (m.hasAttribute('open') && !m.contains(e.target)) m.removeAttribute('open');
+      if (mnu.hasAttribute('open') && !mnu.contains(e.target)) mnu.removeAttribute('open');
     });
+  }
+
+  // mark the active category chip while scrolling the menu
+  var chips = [].slice.call(document.querySelectorAll('.cat-nav a'));
+  if (chips.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    chips.forEach(function(c){ byId[c.getAttribute('href').slice(1)] = c; });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) {
+          chips.forEach(function(c){ c.removeAttribute('data-active'); });
+          var a = byId[en.target.id];
+          if (a) { a.setAttribute('data-active',''); a.scrollIntoView({inline:'center', block:'nearest'}); }
+        }
+      });
+    }, {rootMargin:'-120px 0px -70% 0px'});
+    document.querySelectorAll('.cat').forEach(function(s){ io.observe(s); });
   }
 </script>
 </body>
