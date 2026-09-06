@@ -123,8 +123,11 @@ img { max-width:100%; display:block; }
   transition:box-shadow .2s ease;
 }
 .hdr.is-scrolled { box-shadow:0 2px 16px rgba(20,20,20,.06); }
-.brand { display:flex; align-items:center; gap:10px; margin-right:auto; font-family:"Zilla Slab",serif; font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:1.05rem; text-decoration:none; }
+.brand-group { display:flex; align-items:center; gap:16px; margin-right:auto; min-width:0; }
+.brand { display:flex; align-items:center; gap:10px; flex:none; font-family:"Zilla Slab",serif; font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:1.05rem; text-decoration:none; }
 .brand .mark { font-size:1.15rem; }
+.hdr .open-status { margin:0; font-size:.78rem; white-space:nowrap; }
+@media (max-width:700px) { .hdr .open-status { display:none; } }
 .hdr-nav { display:flex; gap:22px; align-items:center; }
 .hdr-nav a { font-size:.82rem; letter-spacing:.13em; text-transform:uppercase; text-decoration:none; color:var(--ink-soft); font-weight:600; transition:color .15s; }
 .hdr-nav a:hover { color:var(--lacquer); }
@@ -419,7 +422,10 @@ img { max-width:100%; display:block; }
 <body>
 
 <header class="hdr">
-  <a href="#top" class="brand"><svg class="mark" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.6" y="2.6" width="6.8" height="6.8" transform="rotate(45 6 6)"/></svg>Diamant</a>
+  <div class="brand-group">
+    <a href="#top" class="brand"><svg class="mark" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.6" y="2.6" width="6.8" height="6.8" transform="rotate(45 6 6)"/></svg>Diamant</a>
+    <span class="open-status" id="openStatus" hidden><span class="os-dot"></span><span class="os-text"></span></span>
+  </div>
   <nav class="hdr-nav">
     <a href="#kaart">Kaart</a>
     <a href="#menus">Menu&rsquo;s</a>
@@ -741,7 +747,6 @@ img { max-width:100%; display:block; }
       </div>
       <div class="info-block">
         <h3><span class="pip"></span> Openingstijden</h3>
-        <p class="open-status" id="openStatus" hidden><span class="os-dot"></span><span class="os-text"></span></p>
         <table class="hours">
           <tr><td>Maandag</td><td>16:00&ndash;20:30</td></tr>
           <tr><td>Dinsdag</td><td class="closed">Gesloten</td></tr>
