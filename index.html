@@ -255,8 +255,16 @@ img { max-width:100%; display:block; }
   background:var(--paper-2);
   border-bottom:1px solid var(--line);
 }
+.cat-nav-edges { position:relative; max-width:1100px; margin:0 auto; }
+.cat-nav-edges::before, .cat-nav-edges::after {
+  content:""; position:absolute; top:0; bottom:0; width:36px; z-index:1;
+  pointer-events:none; opacity:0; transition:opacity .15s ease;
+}
+.cat-nav-edges::before { left:0; background:linear-gradient(to right, var(--paper-2), transparent); }
+.cat-nav-edges::after { right:0; background:linear-gradient(to left, var(--paper-2), transparent); }
+.cat-nav-edges.can-scroll-left::before { opacity:1; }
+.cat-nav-edges.can-scroll-right::after { opacity:1; }
 .cat-nav-track {
-  max-width:1100px; margin:0 auto;
   display:flex; gap:8px; overflow-x:auto;
   padding:10px clamp(16px,5vw,48px);
   scrollbar-width:none;
@@ -462,7 +470,7 @@ img { max-width:100%; display:block; }
   </section>
 
   <section id="kaart">
-    <nav class="cat-nav" aria-label="Categorie&euml;n"><div class="cat-nav-track"><a href="#cat-soepen">Soepen</a><a href="#cat-voorgerechten-en-snacks">Voorgerechten</a><a href="#cat-nasi">Nasi</a><a href="#cat-bami">Bami</a><a href="#cat-mihoen-en-chinese-bami">Mihoen</a><a href="#cat-tjap-tjoy-en-foe-yong-hai">Tjap tjoy</a><a href="#cat-varkensvlees">Varkensvlees</a><a href="#cat-kip">Kip</a><a href="#cat-rundvlees-en-ossenhaas">Rundvlees</a><a href="#cat-garnalen">Garnalen</a><a href="#cat-specialiteiten">Specialiteiten</a><a href="#cat-thaise-gerechten">Thaise gerechten</a></div></nav>
+    <nav class="cat-nav" aria-label="Categorie&euml;n"><div class="cat-nav-edges"><div class="cat-nav-track"><a href="#cat-soepen">Soepen</a><a href="#cat-voorgerechten-en-snacks">Voorgerechten</a><a href="#cat-nasi">Nasi</a><a href="#cat-bami">Bami</a><a href="#cat-mihoen-en-chinese-bami">Mihoen</a><a href="#cat-tjap-tjoy-en-foe-yong-hai">Tjap tjoy</a><a href="#cat-varkensvlees">Varkensvlees</a><a href="#cat-kip">Kip</a><a href="#cat-rundvlees-en-ossenhaas">Rundvlees</a><a href="#cat-garnalen">Garnalen</a><a href="#cat-specialiteiten">Specialiteiten</a><a href="#cat-thaise-gerechten">Thaise gerechten</a></div></div></nav>
     <div class="wrap">
       <div class="menu-head">
         <div class="sec-eyebrow">De kaart</div>
@@ -907,6 +915,21 @@ img { max-width:100%; display:block; }
     });
   }
 
+  // fade the left/right edge of the category strip instead of hard-clipping
+  // the last pill, and only show a side's fade while there's more to scroll
+  var navEdges = document.querySelector('.cat-nav-edges');
+  var navTrack = document.querySelector('.cat-nav-track');
+  if (navEdges && navTrack) {
+    var updateEdges = function(){
+      var max = navTrack.scrollWidth - navTrack.clientWidth;
+      navEdges.classList.toggle('can-scroll-left', navTrack.scrollLeft > 4);
+      navEdges.classList.toggle('can-scroll-right', navTrack.scrollLeft < max - 4);
+    };
+    navTrack.addEventListener('scroll', updateEdges, {passive:true});
+    window.addEventListener('resize', updateEdges);
+    updateEdges();
+  }
+
   // highlight the category chip you're currently reading (read-only: never scrolls the page)
   var chips = [].slice.call(document.querySelectorAll('.cat-nav a'));
   var track = document.querySelector('.cat-nav-track');
@@ -917,9 +940,15 @@ img { max-width:100%; display:block; }
     var ticking = false;
     function updateChip() {
       ticking = false;
-      var current = null;
+      // De kaart staat in 2 CSS-kolommen, dus categorieën lopen niet in
+      // beeldschermvolgorde door de DOM (een latere categorie kan
+      // bovenaan kolom 2 net zo hoog staan als de eerste in kolom 1).
+      // Kies daarom de categorie die het dichtst boven de leeslijn zit,
+      // niet simpelweg de laatste in DOM-volgorde die eroverheen is.
+      var current = null, bestTop = -Infinity;
       for (var i = 0; i < cats.length; i++) {
-        if (cats[i].getBoundingClientRect().top - 140 <= 0) current = cats[i].id;
+        var top = cats[i].getBoundingClientRect().top - 140;
+        if (top <= 0 && top > bestTop) { bestTop = top; current = cats[i].id; }
       }
       if (!current) return;
       var a = byId[current];
