@@ -888,16 +888,15 @@ img { max-width:100%; display:block; }
 
   // live "nu open / gesloten" status
   var SCHED = {0:[720,1230], 1:[960,1230], 3:[960,1230], 4:[960,1230], 5:[960,1230], 6:[720,1230]};
-  var DAYS = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
   function fmt(x) { var h = Math.floor(x / 60), m = x % 60; return h + ':' + (m < 10 ? '0' : '') + m; }
   var el = document.getElementById('openStatus');
   if (el) {
     var t = SCHED[dow], msg, state;
     if (t && mins >= t[0] && mins < t[1]) { state = 'is-open'; msg = 'Nu open, tot ' + fmt(t[1]); }
-    else if (t && mins < t[0]) { state = 'is-closed'; msg = 'Nu gesloten, vandaag vanaf ' + fmt(t[0]); }
+    else if (t && mins < t[0]) { state = 'is-closed'; msg = 'Nu gesloten, vanaf ' + fmt(t[0]) + ' geopend'; }
     else {
       state = 'is-closed'; msg = 'Nu gesloten';
-      for (var i = 1; i <= 7; i++) { var nd = (dow + i) % 7; if (SCHED[nd]) { msg = 'Nu gesloten, ' + (i === 1 ? 'morgen' : DAYS[nd]) + ' vanaf ' + fmt(SCHED[nd][0]); break; } }
+      for (var i = 1; i <= 7; i++) { var nd = (dow + i) % 7; if (SCHED[nd]) { msg = 'Nu gesloten, vanaf ' + fmt(SCHED[nd][0]) + ' geopend'; break; } }
     }
     el.classList.add(state);
     el.querySelector('.os-text').textContent = msg;
