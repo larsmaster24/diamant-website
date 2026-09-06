@@ -244,35 +244,6 @@ img { max-width:100%; display:block; }
   .reveal.is-visible { opacity:1; transform:translateY(0); }
 }
 
-/* ---------- steps ---------- */
-.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-@media (max-width:760px) { .steps { grid-template-columns:1fr; } }
-@media (prefers-reduced-motion:no-preference) {
-  .steps.reveal .step { opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1); }
-  .steps.reveal.is-visible .step { opacity:1; transform:translateY(0); }
-  .steps.reveal.is-visible .step:nth-child(1) { transition-delay:0s; }
-  .steps.reveal.is-visible .step:nth-child(2) { transition-delay:.12s; }
-  .steps.reveal.is-visible .step:nth-child(3) { transition-delay:.24s; }
-}
-.step {
-  background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-  box-shadow:var(--card-shadow);
-  padding:28px 24px;
-  position:relative;
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.step:hover, .steps.reveal.is-visible .step:hover { transform:translateY(-3px); box-shadow:0 4px 10px rgba(20,20,20,.06), 0 14px 28px rgba(20,20,20,.08); }
-.step .n {
-  font-family:"Zilla Slab",serif; font-weight:700; font-size:1rem;
-  width:38px; height:38px; border-radius:50%;
-  display:grid; place-items:center;
-  background:var(--paper-2); color:var(--lacquer);
-  border:1.5px solid var(--gold);
-  margin-bottom:16px;
-}
-.step h3 { font-size:1.2rem; margin-bottom:6px; }
-.step p { margin:0; color:var(--ink-soft); font-size:.96rem; }
-
 /* ---------- menu ---------- */
 #kaart { background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 #kaart .wrap { padding-top:clamp(30px,5vw,52px); }
@@ -450,7 +421,6 @@ img { max-width:100%; display:block; }
 <header class="hdr">
   <a href="#top" class="brand"><svg class="mark" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.6" y="2.6" width="6.8" height="6.8" transform="rotate(45 6 6)"/></svg>Diamant</a>
   <nav class="hdr-nav">
-    <a href="#bestellen">Bestellen</a>
     <a href="#kaart">Kaart</a>
     <a href="#menus">Menu&rsquo;s</a>
     <a href="#info">Bezoek</a>
@@ -459,7 +429,6 @@ img { max-width:100%; display:block; }
   <details class="hdr-menu">
     <summary aria-label="Menu openen"></summary>
     <nav class="panel">
-      <a href="#bestellen">Bestellen</a>
       <a href="#kaart">Kaart</a>
       <a href="#menus">Menu&rsquo;s</a>
       <a href="#info">Bezoek</a>
@@ -482,29 +451,6 @@ img { max-width:100%; display:block; }
         <span><span class="pip"></span> Slimstraat 29, Udenhout</span>
         <span><span class="pip"></span> Doorgaans klaar in 20 minuten</span>
         <span><svg class="ico-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.8 6 6.6.8-4.9 4.5 1.3 6.5L12 18.1 6.2 20.8l1.3-6.5L2.6 9.3l6.6-.8z"/></svg> 4,1 op Google</span>
-      </div>
-    </div>
-  </section>
-
-  <section id="bestellen" class="wrap">
-    <div class="sec-eyebrow">Zo werkt het</div>
-    <h2 class="sec-title">Afhalen in drie stappen</h2>
-    <p class="sec-intro">Diamant is een afhaalrestaurant. Je bestelt telefonisch en haalt je maaltijd warm op aan de Slimstraat.</p>
-    <div class="steps reveal">
-      <div class="step">
-        <div class="n">1</div>
-        <h3>Bel je bestelling door</h3>
-        <p>Kies van de kaart en bel <a href="tel:+31135111824" style="color:var(--lacquer);font-weight:600;text-decoration:none">013 511 1824</a>. Doorgeven op nummer mag: &ldquo;twee keer 27 graag&rdquo;.</p>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <h3>Wij maken het vers</h3>
-        <p>De keuken gaat aan de slag. De meeste bestellingen staan binnen zo&rsquo;n twintig minuten klaar; op feestdagen iets langer.</p>
-      </div>
-      <div class="step">
-        <div class="n">3</div>
-        <h3>Ophalen &amp; betalen</h3>
-        <p>Kom langs op het afgesproken tijdstip. Afrekenen kan aan de balie met pin of contant.</p>
       </div>
     </div>
   </section>
@@ -823,7 +769,6 @@ img { max-width:100%; display:block; }
       <h4>Kaart</h4>
       <p><a href="#kaart">Alle gerechten</a></p>
       <p><a href="#menus">Menu&rsquo;s &amp; rijsttafels</a></p>
-      <p><a href="#bestellen">Zo bestel je</a></p>
     </div>
     <div class="col">
       <h4>Goed om te weten</h4>
