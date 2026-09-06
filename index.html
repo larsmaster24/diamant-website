@@ -248,8 +248,7 @@ img { max-width:100%; display:block; }
 #kaart .wrap { padding-top:clamp(30px,5vw,52px); }
 .cat-nav {
   position:sticky; top:59px; z-index:40;
-  background:color-mix(in srgb, var(--paper-2) 92%, transparent);
-  backdrop-filter:blur(8px);
+  background:var(--paper-2);
   border-bottom:1px solid var(--line);
 }
 .cat-nav-track {
@@ -814,21 +813,35 @@ img { max-width:100%; display:block; }
     });
   }
 
-  // mark the active category chip while scrolling the menu
+  // highlight the category chip you're currently reading (read-only: never scrolls the page)
   var chips = [].slice.call(document.querySelectorAll('.cat-nav a'));
-  if (chips.length && 'IntersectionObserver' in window) {
+  var track = document.querySelector('.cat-nav-track');
+  var cats = [].slice.call(document.querySelectorAll('.cat'));
+  if (chips.length && cats.length) {
     var byId = {};
     chips.forEach(function(c){ byId[c.getAttribute('href').slice(1)] = c; });
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (en.isIntersecting) {
-          chips.forEach(function(c){ c.removeAttribute('data-active'); });
-          var a = byId[en.target.id];
-          if (a) { a.setAttribute('data-active',''); a.scrollIntoView({inline:'center', block:'nearest'}); }
-        }
-      });
-    }, {rootMargin:'-120px 0px -70% 0px'});
-    document.querySelectorAll('.cat').forEach(function(s){ io.observe(s); });
+    var ticking = false;
+    function updateChip() {
+      ticking = false;
+      var current = null;
+      for (var i = 0; i < cats.length; i++) {
+        if (cats[i].getBoundingClientRect().top - 140 <= 0) current = cats[i].id;
+      }
+      if (!current) return;
+      var a = byId[current];
+      if (!a || a.hasAttribute('data-active')) return;
+      chips.forEach(function(c){ c.removeAttribute('data-active'); });
+      a.setAttribute('data-active', '');
+      if (track) {
+        var tr = track.getBoundingClientRect(), ar = a.getBoundingClientRect();
+        if (ar.left < tr.left + 12) track.scrollLeft -= (tr.left + 12 - ar.left);
+        else if (ar.right > tr.right - 12) track.scrollLeft += (ar.right - tr.right + 12);
+      }
+    }
+    window.addEventListener('scroll', function(){
+      if (!ticking) { ticking = true; requestAnimationFrame(updateChip); }
+    }, {passive:true});
+    updateChip();
   }
 </script>
 </body>
